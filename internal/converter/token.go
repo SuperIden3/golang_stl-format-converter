@@ -63,4 +63,3 @@ func (t Token) String() (string, error) {
 	}
 	return "ILLEGAL", fmt.Errorf("Invalid token: %d", t)
 }
-
