@@ -25,7 +25,9 @@ type BinaryFacet struct {
 	Attrib Attribute
 }
 
-func CalculateFileSize(numTriangles uint32) uint { return HEADER_SIZE + TRIANGLE_COUNT_SIZE + (numTriangles * FACET_SIZE) }
+func CalculateFileSize(numTriangles uint32) uint {
+	return uint(uint64(HEADER_SIZE) + uint64(TRIANGLE_COUNT_SIZE) + uint64(numTriangles)*uint64(FACET_SIZE))
+}
 
 // --- //
 

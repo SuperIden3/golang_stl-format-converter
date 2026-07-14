@@ -1,5 +1,10 @@
 package converter
 
+import (
+	"fmt"
+	"strconv"
+)
+
 type Token uint
 
 const (
@@ -52,6 +57,9 @@ func TokenFromString(s string) (Token, error) {
 	mapping, _ := TokenMappings()
 	if token, ok := mapping[s]; ok {
 		return token, nil
+	}
+	if _, err := strconv.ParseFloat(s, 32); err == nil {
+		return NUMBER, nil
 	}
 	return ILLEGAL, fmt.Errorf("Invalid token: %s", s)
 }
