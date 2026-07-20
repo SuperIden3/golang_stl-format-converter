@@ -3,18 +3,25 @@ package main
 import (
 	"fmt"
 	"os"
+	"superiden3.github.io/stl-format-converter/internal/api"
 )
 
 func main() {
-	if len(os.Args) != 3 {
-		fmt.Fprintf(os.Stderr, "usage: %s <input.stl> <output.stl>\n", os.Args[0])
-		os.Exit(2)
+	if len(os.Args) < 3 {
+		fmt.Fprintln(os.Stderr, "Usage: %s <inputfile1> <outputfile1> [inputfile2] [outputfile2] [...] [inputfileN] [outputfileN]", os.Args[0])
+		fmt.Fprintln(os.Stderr)
+		os.Exit(1)
 	}
 
-	inputPath := os.Args[1]
-	outputPath := os.Args[2]
+	for i := 1; i < len(os.Args); i += 2 {
+		if !os.Exists(os.Args[i]) {
+			fmt.Fprintln(os.Stderr, "Input file does not exist: %s, skipping next argument...", os.Args[i])
+			continue
+		}
 
-	fmt.Printf("Converting %s -> %s\n", inputPath, outputPath)
-	fmt.Println("CLI implementation is scaffolded and ready for converter wiring")
-	_ = outputPath
+		if i+1 >= len(os.Args) {
+			fmt.Fprintln(os.Stderr, "Missing output file for input file: %s", os.Args[i])
+			break
+		}
+	}
 }

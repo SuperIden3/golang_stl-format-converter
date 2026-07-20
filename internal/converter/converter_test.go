@@ -63,3 +63,25 @@ func TestASCIILexerNextTokenHandlesNumbers(t *testing.T) {
 		t.Fatalf("expected NUMBER token, got %v", tok.Token)
 	}
 }
+
+func TestIsASCIIFileDetectsASCIIFromKeywords(t *testing.T) {
+	path := t.TempDir() + "/ascii.stl"
+	content := "facet normal 0.0 0.0 -1.0\nouter loop\nvertex 0 0 0\n"
+	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
+		t.Fatalf("failed to write sample file: %v", err)
+	}
+
+	file, err := os.Open(path)
+	if err != nil {
+		t.Fatalf("failed to open sample file: %v", err)
+	}
+	defer file.Close()
+
+	isASCII, err := IsASCIIFile(file)
+	if err != nil {
+		t.Fatalf("expected no error but got: %v", err)
+	}
+	if !isASCII {
+		t.Fatalf("expected ASCII file to be detected from keyword markers")
+	}
+}
